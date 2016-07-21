@@ -572,7 +572,13 @@
 @@ Also install static libs by ENABLE_STATIC_LIBS
 
 @patch 20006_all_cmake_elib-mariadb-5.5.40.patch
-@ver 5.05.40.00 to 5.05.99.99
+@ver 5.05.40.00 to 5.05.49.99
+@pn mariadb
+@@ Add ELIBPATH to split client and embedded libs
+@@ Also install static libs by ENABLE_STATIC_LIBS
+
+@patch 20006_all_cmake_elib-mariadb-5.5.50.patch
+@ver 5.05.50.00 to 5.05.99.99
 @pn mariadb
 @@ Add ELIBPATH to split client and embedded libs
 @@ Also install static libs by ENABLE_STATIC_LIBS
