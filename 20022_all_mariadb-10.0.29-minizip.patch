@@ -1,0 +1,57 @@
+diff -aruN a/storage/connect/CMakeLists.txt b/storage/connect/CMakeLists.txt
+--- a/storage/connect/CMakeLists.txt	2017-01-11 20:45:20.000000000 -0500
++++ b/storage/connect/CMakeLists.txt	2017-01-22 21:11:15.000000000 -0500
+@@ -286,8 +286,13 @@
+ OPTION(CONNECT_WITH_ZIP "Compile CONNECT storage engine with ZIP support" ON)
+ 
+ IF(CONNECT_WITH_ZIP)
+-  SET(CONNECT_SOURCES ${CONNECT_SOURCES} filamzip.cpp tabzip.cpp unzip.c ioapi.c zip.c
+-    filamzip.h tabzip.h ioapi.h unzip.h zip.h)
++  SET(CONNECT_SOURCES ${CONNECT_SOURCES} filamzip.cpp tabzip.cpp filamzip.h tabzip.h)
++  pkg_check_modules(MINIZIP minizip)
++  if(MINIZIP_FOUND) # Use system version
++    add_definitions(-DMINIZIP_FOUND)
++  else()
++    SET(CONNECT_SOURCES ${CONNECT_SOURCES} unzip.c ioapi.c zip.c ioapi.h unzip.h zip.h)
++  endif(MINIZIP_FOUND)
+   add_definitions(-DZIP_SUPPORT -DNOCRYPT)
+ ENDIF(CONNECT_WITH_ZIP)
+ 
+@@ -311,5 +316,6 @@
+   COMPONENT connect-engine
+   RECOMPILE_FOR_EMBEDDED
+   LINK_LIBRARIES ${ZLIB_LIBRARY} ${XML_LIBRARY} ${ICONV_LIBRARY}
+-                 ${ODBC_LIBRARY} ${JDBC_LIBRARY} ${IPHLPAPI_LIBRARY})
++                 ${ODBC_LIBRARY} ${JDBC_LIBRARY} ${IPHLPAPI_LIBRARY}
++                 ${MINIZIP_LIBRARIES})
+ 
+diff -aruN a/storage/connect/filamzip.h b/storage/connect/filamzip.h
+--- a/storage/connect/filamzip.h	2017-01-11 20:45:20.000000000 -0500
++++ b/storage/connect/filamzip.h	2017-01-17 22:12:54.000000000 -0500
+@@ -10,7 +10,11 @@
+ 
+ #include "block.h"
+ #include "filamap.h"
++#ifdef MINIZIP_FOUND
++#include "minizip/unzip.h"
++#else
+ #include "unzip.h"
++#endif
+ 
+ #define DLLEXPORT extern "C"
+ 
+diff -aruN a/storage/connect/tabzip.h b/storage/connect/tabzip.h
+--- a/storage/connect/tabzip.h	2017-01-11 20:45:21.000000000 -0500
++++ b/storage/connect/tabzip.h	2017-01-17 22:13:18.000000000 -0500
+@@ -9,7 +9,11 @@
+ #include "block.h"
+ #include "colblk.h"
+ #include "xtable.h"
++#ifdef MINIZIP_FOUND
++#include "minizip/unzip.h"
++#else
+ #include "unzip.h"
++#endif
+ 
+ typedef class ZIPDEF *PZIPDEF;
+ typedef class TDBZIP *PTDBZIP;
