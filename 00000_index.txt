@@ -946,3 +946,9 @@
 @ver 10.01.11.00 to 10.01.11.99
 @pn mariadb
 @@ Fix server gssapi plugin compile with heimdal
+
+@patch 20023_all_mysql-5.5-CVE-2017-3302.patch
+@ver 5.05.45.00 to 5.05.54.99
+@pn mysql
+@@ Fix use-after-free in mysql_prune_stmt_list
+@@ Back ported from mysql 5.6; Oracle bug 17512527
