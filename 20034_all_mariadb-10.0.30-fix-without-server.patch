@@ -1,0 +1,13 @@
+diff -aruN a/include/my_sys.h b/include/my_sys.h
+--- a/include/my_sys.h	2017-03-09 16:09:17.630156658 -0500
++++ b/include/my_sys.h	2017-03-09 16:05:43.560021093 -0500
+@@ -597,6 +597,9 @@
+ 				   myf MyFlags);
+ extern int my_rename_with_symlink(const char *from,const char *to,myf MyFlags);
+ extern int my_symlink(const char *content, const char *linkname, myf MyFlags);
++#ifndef PSI_file_key
++typedef unsigned int PSI_file_key;
++#endif
+ extern int my_handler_delete_with_symlink(PSI_file_key key, const char *name,
+                                           const char *ext, myf sync_dir);
+ extern size_t my_read(File Filedes,uchar *Buffer,size_t Count,myf MyFlags);
