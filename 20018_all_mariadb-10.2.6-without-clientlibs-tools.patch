@@ -86,10 +86,10 @@ diff -aurN a/libmariadb/libmariadb/CMakeLists.txt b/libmariadb/libmariadb/CMakeL
  
 -ADD_LIBRARY(mariadbclient STATIC ${mariadbclient_RC} ${MARIADB_OBJECTS} ${EMPTY_FILE} mariadbclient.def)
 -TARGET_LINK_LIBRARIES(mariadbclient ${SYSTEM_LIBS})
-+IF(ENABLE_STATIC_LIBS)
++IF(ENABLE_STATIC_LIBS OR NOT WITHOUT_TOOLS)
 +  ADD_LIBRARY(mariadbclient STATIC ${mariadbclient_RC} ${MARIADB_OBJECTS} ${EMPTY_FILE} mariadbclient.def)
 +  TARGET_LINK_LIBRARIES(mariadbclient ${SYSTEM_LIBS})
-+ENDIF(ENABLE_STATIC_LIBS)
++ENDIF(ENABLE_STATIC_LIBS OR NOT WITHOUT_TOOLS)
  ADD_LIBRARY(libmariadb SHARED ${libmariadb_RC} ${MARIADB_OBJECTS} ${EMPTY_FILE} mariadbclient.def)
  TARGET_LINK_LIBRARIES(libmariadb ${SYSTEM_LIBS})
  
@@ -97,9 +97,9 @@ diff -aurN a/libmariadb/libmariadb/CMakeLists.txt b/libmariadb/libmariadb/CMakeL
    TARGET_LINK_LIBRARIES (libmariadb "-Wl,--version-script=${CC_BINARY_DIR}/libmariadb/mariadbclient.def")
  ENDIF()
  
-+IF(ENABLE_STATIC_LIBS)
++IF(ENABLE_STATIC_LIBS OR NOT WITHOUT_TOOLS)
  SET_TARGET_PROPERTIES(mariadbclient PROPERTIES IMPORTED_INTERFACE_LINK_LIBRARIES "${SYSTEM_LIBS}")
-+ENDIF(ENABLE_STATIC_LIBS)
++ENDIF(ENABLE_STATIC_LIBS OR NOT WITHOUT_TOOLS)
  SET_TARGET_PROPERTIES(libmariadb PROPERTIES IMPORTED_INTERFACE_LINK_LIBRARIES "${SYSTEM_LIBS}")
  
  SET_TARGET_PROPERTIES(libmariadb PROPERTIES PREFIX "")
